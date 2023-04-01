@@ -6,9 +6,6 @@ djangorestframework==3.14.0
 psycopg2-binary==2.9.5
 python-dotenv==1.0.0
 pytz==2023.3
-<<<<<<< HEAD
 sqlparse==0.4.3
 typing_extensions==4.5.0
-=======
 sqlparse==0.4.3
->>>>>>> 720658e03633c104066e03ddd1117034cdca8ea9
