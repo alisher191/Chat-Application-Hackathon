@@ -1,22 +1,25 @@
-from rest_framework import serializers
+from rest_framework.serializers import ModelSerializer, HiddenField, CurrentUserDefault, DateTimeField
+from django.contrib.auth.models import User
 
-from .models import ChatRoom, Message, UserProfile
+from .models import Room
 
 
-class UserSerializer(serializers.ModelSerializer):
+class UserSerializer(ModelSerializer):
     class Meta:
-        model = UserProfile
-        fields = ['username', 'password']
+        model = User
+        fields = ['username']
 
 
-class ChatRoomSerializer(serializers.ModelSerializer):
+class RoomSerializer(ModelSerializer):
+    owner = HiddenField(default=CurrentUserDefault())
+    created = DateTimeField(format="%Y-%m-%d %H:%M:%S", read_only=True)
+    updated = DateTimeField(format="%Y-%m-%d %H:%M:%S", read_only=True)
     class Meta:
-        model = ChatRoom
+        model = Room
         fields = '__all__'
 
-
-class MessageSerializer(serializers.ModelSerializer):
-    class Meta:
-        model = Message
-        fields = '__all__'
-        
+    def to_representation(self, instance):
+        ret = super().to_representation(instance)
+        ret['owner'] = UserSerializer(instance.owner).data['username']
+        return ret
+    

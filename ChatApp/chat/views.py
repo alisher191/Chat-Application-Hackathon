@@ -1,34 +1,30 @@
-from rest_framework import generics
-from .models import User, ChatRoom, Message
-from .serializers import UserSerializer, ChatRoomSerializer, MessageSerializer
+from rest_framework.decorators import api_view
+from rest_framework.response import Response
+from rest_framework import generics, status
+from rest_framework.views import APIView
+
+from .models import Room
+from .serializers import RoomSerializer
 
 
-class UserList(generics.ListCreateAPIView):
-    queryset = User.objects.all()
-    serializer_class = UserSerializer
+@api_view(['GET'])
+def getRoutes(request):
+    routes = [
+        'GET /api',
+        'GET /api/rooms',
+        'GET /api/rooms/:id'
+    ]
+    return Response(routes)
 
 
-class UserDetail(generics.RetrieveUpdateDestroyAPIView):
-    queryset = User.objects.all()
-    serializer_class = UserSerializer
+class RoomList(generics.ListAPIView):
+    queryset = Room.objects.all()
+    serializer_class = RoomSerializer
 
-
-class ChatRoomList(generics.ListCreateAPIView):
-    queryset = ChatRoom.objects.all()
-    serializer_class = ChatRoomSerializer
-
-
-class ChatRoomDetail(generics.RetrieveUpdateDestroyAPIView):
-    queryset = ChatRoom.objects.all()
-    serializer_class = ChatRoomSerializer
-
-
-class MessageList(generics.ListCreateAPIView):
-    queryset = Message.objects.all()
-    serializer_class = MessageSerializer
-
-
-class MessageDetail(generics.RetrieveUpdateDestroyAPIView):
-    queryset = Message.objects.all()
-    serializer_class = MessageSerializer
+    
+class RoomDetailView(APIView):
+    def get(self, request, pk):
+        room = Room.objects.get(id=pk)
+        serializer = RoomSerializer(room)
+        return Response(serializer.data, status=status.HTTP_200_OK)
     
