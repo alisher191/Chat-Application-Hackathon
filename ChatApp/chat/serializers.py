@@ -1,27 +1,22 @@
 from rest_framework import serializers
-from django.contrib.auth.models import User
 
-from .models import UserProfile, ChatRoom, Message
+from .models import ChatRoom, Message, UserProfile
+
 
 class UserSerializer(serializers.ModelSerializer):
     class Meta:
-        model = User
-        fields = ['username', 'password']
-
-class UserProfileSerializer(serializers.ModelSerializer):
-    class Meta:
         model = UserProfile
-        fields = ['phone_number', 'name', 'agreed_to_terms']
+        fields = ['username', 'password']
 
 
 class ChatRoomSerializer(serializers.ModelSerializer):
     class Meta:
         model = ChatRoom
-        fields = ['id', 'name']
+        fields = '__all__'
 
 
 class MessageSerializer(serializers.ModelSerializer):
     class Meta:
         model = Message
-        fields = ['id', 'user', 'message']
+        fields = '__all__'
         

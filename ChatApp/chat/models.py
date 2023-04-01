@@ -11,10 +11,10 @@ class UserProfile(models.Model):
 
 class ChatRoom(models.Model):
     name = models.CharField(max_length=255)
-    users = models.ManyToManyField(User)
+    users = models.ManyToManyField(User, null=True)
 
 
 class Message(models.Model):
     chat_room = models.ForeignKey(ChatRoom, on_delete=models.CASCADE)
-    user = models.ForeignKey(User, on_delete=models.CASCADE)
+    user = models.ForeignKey(User, on_delete=models.CASCADE, null=True)
     message = models.TextField()
